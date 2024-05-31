@@ -1,15 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ContainerVervoer
+﻿namespace ContainerVervoer
 {
     public class Container
     {
-        public int Weigth { get; set; }
-        public bool Valuable { get; set; }
-        public bool Cooled { get; set; }
+        public int Weight { get; set; } // Gewicht in kg
+        public ContainerType ContainerType { get; set; }
+
+        public Container(int weight, ContainerType containerType)
+        {
+            this.Weight = weight;
+            this.ContainerType = containerType;
+        }
     }
 }
