@@ -9,14 +9,18 @@ namespace ContainerVervoer
     public class Stack
     {
         public List<Container> Containers { get; private set; }
-        private const int MaxWeightOnTop = 120000; // 120 ton bovenop
+        public const int MaxWeightPerStack = 150000; // 150 ton
 
         public Stack()
         {
             Containers = new List<Container>();
         }
 
-
+        public int GetCurrentWeight()
+        {
+            return Containers.Sum(c => c.Weight);
+        }
     }
-
 }
+
+

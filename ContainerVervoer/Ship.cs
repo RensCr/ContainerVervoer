@@ -9,19 +9,23 @@ namespace ContainerVervoer
 {
     public class Ship
     {
-        private int Length;
-        private int width;
-        private int maxWeigth;
-        public Ship(int length,int width) 
-        { 
-            this.Length = length;
-            this.width = width;
-            this.maxWeigth = CalculateMaxWeight();
-        }
-        private int CalculateMaxWeight()
+        public int Length;
+        public int Width;
+        public int MaxWeight;
+        public int MaxStacks; // Maximaal aantal stapels op het schip
+
+        public Ship(int length, int width)
         {
-            int maxWeigth = ((Length * width) * 150000);
-            return maxWeigth;
+            this.Length = length;
+            this.Width = width;
+            this.MaxWeight = CalculateMaxWeight();
+            this.MaxStacks = width;
+        }
+
+        public int CalculateMaxWeight()
+        {
+            int maxWeight = ((Length * Width) * 150000);
+            return maxWeight;
         }
     }
 }
