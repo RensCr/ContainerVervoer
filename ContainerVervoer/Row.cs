@@ -8,6 +8,11 @@ namespace ContainerVervoer
 {
     public class Row
     {
-        public List<Stack> stacks {  get; set; }
+        public List<Stack> Stacks { get; set; }
+
+        public Row()
+        {
+            Stacks = new List<Stack>();
+        }
     }
 }
