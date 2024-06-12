@@ -1,18 +1,20 @@
 ﻿// See https://aka.ms/new-console-template for more information
 using ContainerVervoer;
 
-Ship ship = new Ship(3, 3); 
+Ship ship = new Ship(2, 2); 
 List<Container> containers = new List<Container>
         {
 
             new Container(10000, ContainerType.ValuableCooled),
             new Container(30000, ContainerType.ValuableCooled),
+            new Container(3000, ContainerType.Coolable),
+            new Container(160000, ContainerType.Valuable),
                         new Container(20000, ContainerType.Normal),
 
 
         };
-
- List<Row> rows = Shipyard.LoadShip(ship, containers);
+Shipyard shipyard = new Shipyard();
+ List<Row> rows = shipyard.LoadShip(ship, containers);
 int x = 1;
 foreach (var row in rows)
 {

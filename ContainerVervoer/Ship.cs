@@ -12,7 +12,7 @@ namespace ContainerVervoer
         public int Length;
         public int Width;
         public int MaxWeight;
-        public int MaxStacks; // Maximaal aantal stapels op het schip
+        public int MaxStacks; 
 
         public Ship(int length, int width)
         {

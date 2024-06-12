@@ -9,7 +9,7 @@ namespace ContainerVervoer
     public class Stack
     {
         public List<Container> Containers { get; private set; }
-        public const int MaxWeightPerStack = 150000; // 150 ton
+        public const int MaxWeightPerStack = 150000;
 
         public Stack()
         {
