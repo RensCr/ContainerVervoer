@@ -5,10 +5,21 @@
         public int Weight { get; set; } // Gewicht in kg
         public ContainerType ContainerType { get; set; }
 
+        private const int WeightEmptyContainer = 4000;
+        private const int MaxWeightContainer = 150000;
+
         public Container(int weight, ContainerType containerType)
         {
-            this.Weight = weight;
+            if (weight + WeightEmptyContainer < MaxWeightContainer) { 
+            this.Weight = weight + WeightEmptyContainer;
+            }
+            else
+            {
+                throw new Exception($"De container weegt teveel. De container weegt {weight + WeightEmptyContainer} en maximaal {MaxWeightContainer} toegelaten");
+            }
+
             this.ContainerType = containerType;
         }
+        
     }
 }

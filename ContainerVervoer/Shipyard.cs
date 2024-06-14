@@ -1,110 +1,112 @@
-﻿
-namespace ContainerVervoer;
-public class Shipyard
+using System.Reflection.Metadata.Ecma335;
+
+namespace ContainerVervoer
 {
-    public static List<Row> LoadShip(Ship ship, List<Container> containers)
+    public class Shipyard
     {
-        // Maak een lijst van rijen voor het schip
-        List<Row> rows = new List<Row>();
-        for (int i = 0; i < ship.Length; i++)
+        public List<Row> LoadShip(Ship ship, List<Container> containers)
         {
-            rows.Add(new Row());
+            List<Row> rows = CreateRowsAndStacks(ship);
+            List<Container> placedContainers = new List<Container>();
+
+            var valuableCooledContainers = containers.Where(c => c.ContainerType == ContainerType.ValuableCooled).OrderByDescending(c => c.Weight).ToList();
+            var coolableContainers = containers.Where(c => c.ContainerType == ContainerType.Coolable).ToList();
+            var valuableContainers = containers.Where(c => c.ContainerType == ContainerType.Valuable).OrderByDescending(c => c.Weight).ToList();
+            var normalContainers = containers.Where(c => c.ContainerType == ContainerType.Normal).OrderByDescending(c => c.Weight).ToList();
+
+            int[] order = CalculateBestOrder(ship);
+            PlaceValuableCooledContainersOnRow1(rows, valuableCooledContainers, order, ship, placedContainers);
+            PlaceCoolableContainersOnRow1(rows, coolableContainers, placedContainers);
+            PlaceValuableContainersOnRows(rows, valuableContainers, placedContainers);
+            PlaceNormalContainersOnRows(rows, normalContainers, placedContainers);
+
+            return rows;
         }
 
-        // Maak stacks aan voor elke rij op het schip
-        foreach (var row in rows)
-        {
-            for (int i = 0; i < ship.Width; i++)
-            {
-                row.Stacks.Add(new Stack());
-            }
-        }
-
-        // Houd bij welke containers al zijn geplaatst
-        HashSet<Container> placedContainers = new HashSet<Container>();
-
-        // Sorteer containers van het type "ValuableCooled" op gewicht van zwaar naar licht
-        var valuableCooledContainers = containers
-            .Where(c => c.ContainerType == ContainerType.ValuableCooled)
-            .OrderByDescending(c => c.Weight)
-            .ToList();
-
-        // Plaats de containers op rij 1
-        int[] order = calculateBestOrder();
-        foreach (var container in valuableCooledContainers)
-        {
-            bool placed = false;
-            int valuedCooledCount = rows[0].Stacks.SelectMany(s => s.Containers).Count(c => c.ContainerType == ContainerType.ValuableCooled);
-            if (valuedCooledCount < ship.Width)
-            {
-                var stack = rows[0].Stacks[order[valuedCooledCount]]; // Gebruik de juiste index uit stackOrder
-                if (stack.Containers.Count == 0 && stack.GetCurrentWeight() + container.Weight <= Stack.MaxWeightPerStack)
-                {
-                    stack.Containers.Add(container);
-                    placedContainers.Add(container);
-                    placed = true;
-                }
-            }
-            if (!placed)
-            {
-                Console.WriteLine($"Waarschuwing: Container van type {container.ContainerType} ({container.Weight} kg) kon niet worden geplaatst op rij 1. Maximaal toegestane aantal containers van dit type bereikt.");
-            }
-        }
-        int[] calculateBestOrder()
+        public int[] CalculateBestOrder(Ship ship)
         {
             int[] order = new int[ship.Width];
             for (int i = 0; i < ship.Width; i++)
             {
-                if (i % 2 == 0)
-                {
-                    order[i] = i / 2;
-                }
-                else
-                {
-                    order[i] = ship.Width - (i / 2) - 1;
-                }
+                order[i] = (i % 2 == 0) ? i / 2 : ship.Width - (i / 2) - 1;
             }
             return order;
         }
 
-
-
-
-
-        // Plaats containers van het type "Cooled" op rij 1
-        foreach (var container in containers.Where(c => c.ContainerType == ContainerType.Coolable))
+        public List<Row> CreateRowsAndStacks(Ship ship)
         {
-            bool placed = false;
-            var minWeightStack = rows[0].Stacks.OrderBy(s => s.GetCurrentWeight()).First();
-            if (minWeightStack.GetCurrentWeight() + container.Weight <= Stack.MaxWeightPerStack)
+            List<Row> rows = new List<Row>();
+            for (int i = 0; i < ship.Length; i++)
             {
-                minWeightStack.Containers.Add(container);
-                placedContainers.Add(container);
-                placed = true;
+                rows.Add(new Row());
             }
-            if (!placed)
+
+            foreach (var row in rows)
             {
-                Console.WriteLine($"Waarschuwing: Container van type {container.ContainerType} ({container.Weight} kg) kon niet worden geplaatst op rij 1.");
+                for (int i = 0; i < ship.Width; i++)
+                {
+                    row.Stacks.Add(new Stack());
+                }
+            }
+            return rows;
+        }
+
+        private void PlaceValuableCooledContainersOnRow1(List<Row> rows, List<Container> valuableCooledContainers, int[] order, Ship ship, List<Container> placedContainers)
+        {
+            foreach (var container in valuableCooledContainers)
+            {
+                bool placed = false;
+                int valuableCooledCount = rows[0].Stacks.SelectMany(s => s.Containers).Count(c => c.ContainerType == ContainerType.ValuableCooled);
+                if (valuableCooledCount < ship.Width)
+                {
+                    var stack = rows[0].Stacks[order[valuableCooledCount]];
+                    if (stack.CanAddContainer(container))
+                    {
+                        stack.AddContainer(container);
+                        placedContainers.Add(container);
+                        placed = true;
+                    }
+                }
+                if (!placed)
+                {
+                    Console.WriteLine($"Waarschuwing: Container van type {container.ContainerType} ({container.Weight} kg) kon niet worden geplaatst op rij 1. Maximaal toegestane aantal containers van dit type bereikt.");
+                }
             }
         }
 
-        // Verdeel de "Valuable" containers over rijen vanaf rij 2
-        var valuableContainers = containers.Where(c => c.ContainerType == ContainerType.Valuable).OrderByDescending(c => c.Weight).ToList();
-        foreach (var container in valuableContainers)
+
+        private void PlaceCoolableContainersOnRow1(List<Row> rows, List<Container> coolableContainers, List<Container> placedContainers)
+
         {
-            bool placed = false;
-            for (int i = 1; i < rows.Count; i++)
+            foreach (var container in coolableContainers)
             {
-                foreach (var stack in rows[i].Stacks.OrderBy(s => s.GetCurrentWeight()))
+                bool placed = false;
+                var minWeightStack = rows[0].Stacks.OrderBy(s => s.GetCurrentWeight()).First();
+                if (minWeightStack.CanAddContainer(container))
                 {
-                    // Controleer of er al een "Valuable" container op deze stack staat
-                    if (stack.Containers.Any(c => c.ContainerType == ContainerType.Valuable))
+                    minWeightStack.AddContainer(container);
+                    placedContainers.Add(container);
+                    placed = true;
+                }
+
+                if (!placed)
+                {
+                    Console.WriteLine($"Waarschuwing: Container van type {container.ContainerType} ({container.Weight} kg) kon niet worden geplaatst op rij 1. Maximaal toegestane aantal containers van dit type bereikt.");
+                }
+            }
+        }
+
+        private void PlaceValuableContainersOnRows(List<Row> rows, List<Container> valuableContainers, List<Container> placedContainers)
+        {
+            foreach (var container in valuableContainers)
+            {
+                bool placed = false;
+                for (int i = 0; i < rows.Count; i++)
+                {
+                    var stack = rows[i].Stacks.FirstOrDefault(s => !s.ContainsValuableCooledContainer());
+                    if (stack != null && stack.CanAddContainer(container))
                     {
-                        continue;
-                    }
-                    if (stack.GetCurrentWeight() + container.Weight <= Stack.MaxWeightPerStack)
-                    {
-                        stack.Containers.Add(container);
+                        stack.AddContainer(container);
                         placedContainers.Add(container);
                         placed = true;
                         break;
@@ -112,42 +114,31 @@ public class Shipyard
                 }
                 if (placed) break;
             }
-            if (!placed)
-            {
-                Console.WriteLine($"Waarschuwing: Container van type {container.ContainerType} ({container.Weight} kg) kon niet worden geplaatst.");
-            }
         }
 
-        // Verdeel de "Normal" containers over de rijen, beginnend vanaf rij 2
-        var normalContainers = containers.Where(c => c.ContainerType == ContainerType.Normal).OrderByDescending(c => c.Weight).ToList();
-        foreach (var container in normalContainers)
+
+        private void PlaceNormalContainersOnRows(List<Row> rows, List<Container> normalContainers, List<Container> placedContainers)
         {
-            bool placed = false;
-            for (int i = 1; i < rows.Count; i++)
+            foreach (var container in normalContainers)
             {
-                // Zoek de stack met het minste gewicht in de huidige rij
-                var minWeightStack = rows[i].Stacks.OrderBy(s => s.GetCurrentWeight()).First();
-                // Controleer of het gewicht van de stack het maximale gewicht niet overschrijdt
-                if (minWeightStack.GetCurrentWeight() + container.Weight <= Stack.MaxWeightPerStack)
+                bool placed = false;
+                foreach (var row in rows)
                 {
-                    minWeightStack.Containers.Add(container);
-                    placedContainers.Add(container);
-                    placed = true;
-                    break;
+                    var minWeightStack = row.Stacks.OrderBy(s => s.GetCurrentWeight()).First();
+                    if (minWeightStack.CanAddContainer(container))
+                    {
+                        minWeightStack.AddContainer(container);
+                        placedContainers.Add(container);
+                        placed = true;
+                        break;
+                    }
+                }
+                if (!placed)
+                {
+                    Console.WriteLine($"Waarschuwing: Container van type {container.ContainerType} ({container.Weight} kg) kon niet worden geplaatst.");
                 }
             }
-            if (!placed)
-            {
-                Console.WriteLine($"Waarschuwing: Container van type {container.ContainerType} ({container.Weight} kg) kon niet worden geplaatst.");
-            }
         }
-
-
-        return rows;
+        
     }
 }
-
-
-
-
-
