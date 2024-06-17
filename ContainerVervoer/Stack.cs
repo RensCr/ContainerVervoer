@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ContainerVervoer
 {
@@ -26,18 +24,21 @@ namespace ContainerVervoer
             return GetCurrentWeight() + container.Weight <= MaxWeightPerStack;
         }
 
-        public void AddContainer(Container container)
+        public bool AddContainer(Container container)
         {
             if (CanAddContainer(container))
             {
                 Containers.Add(container);
+                return true;
             }
+            return false;
         }
+
         public void AddValueableContainer(Container container)
         {
             if (CanAddContainer(container))
             {
-                Containers.Insert(0,container);
+                Containers.Insert(0, container);
             }
         }
 
@@ -45,25 +46,19 @@ namespace ContainerVervoer
         {
             return Containers.Any(c => c.ContainerType == ContainerType.ValuableCooled);
         }
+
         public bool ContainsValuableContainer()
         {
             return Containers.Any(c => c.ContainerType == ContainerType.Valuable);
         }
-        // Voorbeeld van de Stack-klasse
 
-       
-            // Andere eigenschappen en methoden van de Stack-klasse
-
-            public int GetStackLength()
-            {
-                return Containers.Count; // Bijvoorbeeld, retourneer het aantal containers in de stack
-            }
-
-
-        // In de Stack klasse of waar je stack implementatie zich bevindt
-
-
+        public int GetStackLength()
+        {
+            return Containers.Count; // Bijvoorbeeld, retourneer het aantal containers in de stack
+        }
+        public bool ContainsContainer(Container container)
+        {
+            return Containers.Contains(container);
+        }
     }
 }
-
-

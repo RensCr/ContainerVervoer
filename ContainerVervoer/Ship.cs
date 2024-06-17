@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ContainerVervoer
 {
@@ -13,6 +10,7 @@ namespace ContainerVervoer
         public int Width;
         public int MaxWeight;
         public int MaxStacks; // Maximaal aantal stapels op het schip
+        public List<Row> Rows { get; private set; }
 
         public Ship(int length, int width)
         {
@@ -20,6 +18,25 @@ namespace ContainerVervoer
             this.Width = width;
             this.MaxWeight = CalculateMaxWeight();
             this.MaxStacks = width;
+            this.Rows = CreateRowsAndStacks();
+        }
+
+        private List<Row> CreateRowsAndStacks()
+        {
+            List<Row> rows = new List<Row>();
+            for (int i = 0; i < Length; i++)
+            {
+                rows.Add(new Row());
+            }
+
+            foreach (var row in rows)
+            {
+                for (int i = 0; i < Width; i++)
+                {
+                    row.Stacks.Add(new Stack());
+                }
+            }
+            return rows;
         }
 
         public int CalculateMaxWeight()
