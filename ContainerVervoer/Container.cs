@@ -10,7 +10,7 @@
 
         public Container(int weight, ContainerType containerType)
         {
-            if (weight + WeightEmptyContainer < MaxWeightContainer) { 
+            if (weight + WeightEmptyContainer <= MaxWeightContainer) { 
             this.Weight = weight + WeightEmptyContainer;
             }
             else

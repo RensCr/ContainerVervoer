@@ -55,7 +55,7 @@ namespace ContainerVervoer
                                 stacks += "4";
                             }
 
-                            weights += container.Weight;
+                            weights += container.Weight/1000;
                         }
                     }
 

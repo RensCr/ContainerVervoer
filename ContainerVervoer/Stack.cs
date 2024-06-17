@@ -32,9 +32,12 @@ namespace ContainerVervoer
             {
                 Containers.Add(container);
             }
-            else
+        }
+        public void AddValueableContainer(Container container)
+        {
+            if (CanAddContainer(container))
             {
-                throw new Exception("Cannot add container: weight limit exceeded.");
+                Containers.Insert(0,container);
             }
         }
 
@@ -42,6 +45,24 @@ namespace ContainerVervoer
         {
             return Containers.Any(c => c.ContainerType == ContainerType.ValuableCooled);
         }
+        public bool ContainsValuableContainer()
+        {
+            return Containers.Any(c => c.ContainerType == ContainerType.Valuable);
+        }
+        // Voorbeeld van de Stack-klasse
+
+       
+            // Andere eigenschappen en methoden van de Stack-klasse
+
+            public int GetStackLength()
+            {
+                return Containers.Count; // Bijvoorbeeld, retourneer het aantal containers in de stack
+            }
+
+
+        // In de Stack klasse of waar je stack implementatie zich bevindt
+
+
     }
 }
 
