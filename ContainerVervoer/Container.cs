@@ -10,7 +10,7 @@ namespace ContainerVervoer
         public ContainerType ContainerType { get; set; }
 
         private const int WeightEmptyContainer = 4000;
-        private const int MaxWeightContainer = 150000;
+        private const int MaxWeightContainer = 26000;
 
         public Container(int weight, ContainerType containerType)
         {

@@ -237,6 +237,11 @@ namespace ContainerVervoer
                             }
                         }
                     }
+
+                }
+                if (!placed)
+                {
+                    Console.WriteLine($"Container : {container.ContainerType} met gewicht {container.Weight}. Kon niet geplaatst worden");
                 }
             }
         }
