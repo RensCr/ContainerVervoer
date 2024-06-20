@@ -7,21 +7,27 @@ namespace ContainerVervoer
     public class Stack
     {
         public List<Container> Containers { get; private set; }
-        public const int MaxWeightPerStack = 150000; // 150 ton
+        public const int MaxWeightPerStack = 150000;
+        public const int MaxWeightOnlowestContainer = 120000; 
+        public int Height => Containers.Count; 
 
         public Stack()
         {
             Containers = new List<Container>();
         }
 
-        public int GetCurrentWeight()
+        public int GetCurrentStackWeight()
         {
             return Containers.Sum(c => c.Weight);
         }
 
         public bool CanAddContainer(Container container)
         {
-            return GetCurrentWeight() + container.Weight <= MaxWeightPerStack;
+            return GetCurrentStackWeight() + container.Weight <= MaxWeightPerStack && CanContainerHoldRestOfStack(container);
+        }
+        private bool CanContainerHoldRestOfStack(Container container)
+        {
+            return GetCurrentStackWeight() + container.Weight <= MaxWeightOnlowestContainer;
         }
 
         public bool AddContainer(Container container)
@@ -52,13 +58,21 @@ namespace ContainerVervoer
             return Containers.Any(c => c.ContainerType == ContainerType.Valuable);
         }
 
-        public int GetStackLength()
-        {
-            return Containers.Count; // Bijvoorbeeld, retourneer het aantal containers in de stack
-        }
         public bool ContainsContainer(Container container)
         {
             return Containers.Contains(container);
+        }
+        public bool HasValuableContainer()
+        {
+            foreach (var container in Containers)
+            {
+                if (container.ContainerType == ContainerType.Valuable)
+                {
+                    return true;
+                }
+            }
+            return false;
+
         }
     }
 }

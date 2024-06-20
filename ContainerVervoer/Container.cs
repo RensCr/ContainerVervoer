@@ -10,13 +10,13 @@ namespace ContainerVervoer
         public ContainerType ContainerType { get; set; }
 
         private const int WeightEmptyContainer = 4000;
-        private const int MaxWeightContainer = 26000;
+        private const int MaxWeightContainer = 30000;
 
         public Container(int weight, ContainerType containerType)
         {
-            if (weight + WeightEmptyContainer <= MaxWeightContainer)
+            if ((weight*1000) + WeightEmptyContainer <= MaxWeightContainer)
             {
-                this.Weight = weight + WeightEmptyContainer;
+                this.Weight = (weight*1000) + WeightEmptyContainer;
             }
             else
             {

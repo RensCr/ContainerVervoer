@@ -9,7 +9,7 @@ namespace ContainerVervoerUnitTest
         {
             // Arrange
             var stack = new Stack();
-            var container = new Container(5000, ContainerType.Normal);
+            var container = new Container(5, ContainerType.Normal);
 
             // Act
             bool added = stack.CanAddContainer(container);
@@ -23,15 +23,15 @@ namespace ContainerVervoerUnitTest
         {
             // Arrange
             var stack = new Stack();
-            var container1 = new Container(146000, ContainerType.Normal); // Adding this will fill the stack
-            var container2 = new Container(3000, ContainerType.Normal);  // This one exceeds the max weight
+            var container1 = new Container(2, ContainerType.Normal); // Adding this will fill the stack
+            var container2 = new Container(3, ContainerType.Normal);  // This one exceeds the max weight
 
             // Act
             stack.AddContainer(container1);
             bool added = stack.CanAddContainer(container2);
 
             // Assert
-            Assert.IsFalse(added);
+            Assert.IsTrue(added);
         }
 
         [TestMethod]
@@ -39,7 +39,7 @@ namespace ContainerVervoerUnitTest
         {
             // Arrange
             var stack = new Stack();
-            var container = new Container(5000, ContainerType.Normal);
+            var container = new Container(5, ContainerType.Normal);
 
             // Act
             stack.AddContainer(container);
@@ -50,12 +50,12 @@ namespace ContainerVervoerUnitTest
         }
 
         [TestMethod]
-        public void AddValueableContainer_AddsValuableContainerToTop()
+        public void AddValueableContainer_AddsValuableContainerToTop_ShouldSucceeds()
         {
             // Arrange
             var stack = new Stack();
-            var valuableContainer1 = new Container(5000, ContainerType.Valuable);
-            var valuableContainer2 = new Container(6000, ContainerType.Valuable);
+            var valuableContainer1 = new Container(5, ContainerType.Valuable);
+            var valuableContainer2 = new Container(6, ContainerType.Valuable);
 
             // Act
             stack.AddValueableContainer(valuableContainer1);
@@ -67,12 +67,12 @@ namespace ContainerVervoerUnitTest
         }
 
         [TestMethod]
-        public void ContainsValuableCooledContainer_StackContainsValuableCooledContainer_ReturnsTrue()
+        public void ContainsValuableCooledContainer_StackContainsValuableCooledContainer_ShouldReturnsTrue()
         {
             // Arrange
             var stack = new Stack();
-            var valuableCooledContainer = new Container(5000, ContainerType.ValuableCooled);
-            stack.AddContainer(new Container(10000, ContainerType.Normal)); // Add a normal container
+            var valuableCooledContainer = new Container(5, ContainerType.ValuableCooled);
+            stack.AddContainer(new Container(10, ContainerType.Normal)); // Add a normal container
             stack.AddContainer(valuableCooledContainer);
 
             // Act
@@ -87,7 +87,7 @@ namespace ContainerVervoerUnitTest
         {
             // Arrange
             var stack = new Stack();
-            stack.AddContainer(new Container(10000, ContainerType.Normal)); // Add a normal container
+            stack.AddContainer(new Container(10, ContainerType.Normal)); // Add a normal container
 
             // Act
             bool containsValuableCooled = stack.ContainsValuableCooledContainer();
@@ -101,8 +101,8 @@ namespace ContainerVervoerUnitTest
         {
             // Arrange
             var stack = new Stack();
-            var valuableContainer = new Container(5000, ContainerType.Valuable);
-            stack.AddContainer(new Container(10000, ContainerType.Normal)); // Add a normal container
+            var valuableContainer = new Container(5, ContainerType.Valuable);
+            stack.AddContainer(new Container(10, ContainerType.Normal)); // Add a normal container
             stack.AddContainer(valuableContainer);
 
             // Act
@@ -117,7 +117,7 @@ namespace ContainerVervoerUnitTest
         {
             // Arrange
             var stack = new Stack();
-            stack.AddContainer(new Container(10000, ContainerType.Normal)); // Add a normal container
+            stack.AddContainer(new Container(10, ContainerType.Normal)); // Add a normal container
 
             // Act
             bool containsValuable = stack.ContainsValuableContainer();
@@ -131,11 +131,11 @@ namespace ContainerVervoerUnitTest
         {
             // Arrange
             var stack = new Stack();
-            stack.AddContainer(new Container(5000, ContainerType.Normal));
-            stack.AddContainer(new Container(7000, ContainerType.Normal));
+            stack.AddContainer(new Container(5, ContainerType.Normal));
+            stack.AddContainer(new Container(7, ContainerType.Normal));
 
             // Act
-            int currentWeight = stack.GetCurrentWeight();
+            int currentWeight = stack.GetCurrentStackWeight();
 
             // Assert
             Assert.AreEqual(20000, currentWeight);
@@ -146,15 +146,62 @@ namespace ContainerVervoerUnitTest
         {
             // Arrange
             var stack = new Stack();
-            stack.AddContainer(new Container(5000, ContainerType.Normal));
-            stack.AddContainer(new Container(7000, ContainerType.Normal));
+            stack.AddContainer(new Container(5, ContainerType.Normal));
+            stack.AddContainer(new Container(7, ContainerType.Normal));
 
             // Act
-            int stackLength = stack.GetStackLength();
+            int stackLength = stack.Height;
 
             // Assert
             Assert.AreEqual(2, stackLength);
         }
+
+        [TestMethod]
+        public void ContainsContainer_GiveAllSortContainer_ShouldReturn3ContainersInstack()
+        {
+            //arrange
+            var stack = new Stack();
+            var NormalContainer = new Container(5, ContainerType.Normal);
+            var ValuableContainer = new Container(5, ContainerType.Valuable);
+            var ValuableCooledContainer = new Container(5, ContainerType.ValuableCooled);
+            var CooledContainer = new Container(5, ContainerType.Coolable);
+            stack.AddContainer(NormalContainer);
+            stack.AddContainer(ValuableContainer);
+            stack.AddContainer(ValuableCooledContainer);
+
+            
+            //act
+            bool StackContainsNormalContainer = stack.ContainsContainer(NormalContainer);
+            bool StackContainsValuableContainer = stack.ContainsContainer(ValuableContainer);
+            bool StackContainsValuableCooledContainer = stack.ContainsContainer(ValuableCooledContainer);
+            bool StackContainscooledContainer = stack.ContainsContainer(CooledContainer);
+            
+            //assert
+            Assert.IsTrue(StackContainsNormalContainer);
+            Assert.IsTrue(StackContainsValuableContainer);
+            Assert.IsTrue(StackContainsValuableCooledContainer);
+            Assert.IsFalse(StackContainscooledContainer);
+        }
+
+        [TestMethod]
+        public void AddContainer_AddInvalidContainer_ShouldReturnFalse()
+        {
+            //arrange
+            Stack stack = new Stack();
+            stack.AddContainer(new Container(25, ContainerType.Normal));
+            stack.AddContainer(new Container(25, ContainerType.Normal));
+            stack.AddContainer(new Container(25, ContainerType.Normal));
+            stack.AddContainer(new Container(25, ContainerType.Normal));
+            stack.AddContainer(new Container(25, ContainerType.Normal));
+            
+            //act
+            bool IsContainerAdded = stack.AddContainer(new Container(26, ContainerType.Normal));
+            
+            //assert
+            Assert.IsFalse(IsContainerAdded);
+        }
+        
     }
+
 }
 

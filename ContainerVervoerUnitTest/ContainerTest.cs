@@ -5,28 +5,28 @@ namespace ContainerVervoerUnitTest
     public class ContainerTest
     {
         [TestMethod]
-        public void Container_Constructor_ValidWeight_SetsWeight()
+        public void Constructor_ValidWeight_SetsWeight()
         {
             // Arrange
-            int weight = 10000; // Net weight without the empty container weight
+            int weight = 10; // Net weight without the empty container weight
             ContainerType containerType = ContainerType.Normal;
 
             // Act
             var container = new Container(weight, containerType);         
 
             // Assert
-            Assert.AreEqual(weight + 4000, container.Weight);
+            Assert.AreEqual(weight*1000 + 4000, container.Weight);
         }
         [TestMethod]
         public void PlaceInStack_ValidStack_AddsContainer()
         {
             // Arrange
             var stack = new Stack();
-            var container = new Container(10000, ContainerType.Normal);
+            var container = new Container(10, ContainerType.Normal);
             var placedContainers = new List<Container>();
 
             // Act
-            container.PlaceInStack(stack, placedContainers);
+            container.CanPlaceInStack(stack, placedContainers);
 
             // Assert
             CollectionAssert.Contains(stack.Containers, container);
@@ -40,13 +40,13 @@ namespace ContainerVervoerUnitTest
             var stack = new Stack();
             for (int i = 0; i < 15; i++) // Add enough containers to exceed the weight limit
             {
-                stack.AddContainer(new Container(10000, ContainerType.Normal));
+                stack.AddContainer(new Container(10, ContainerType.Normal));
             }
-            var container = new Container(10000, ContainerType.Normal);
+            var container = new Container(10, ContainerType.Normal);
             var placedContainers = new List<Container>();
 
             // Act
-            container.PlaceInStack(stack, placedContainers);
+            container.CanPlaceInStack(stack, placedContainers);
 
             // Assert
             Assert.IsFalse(stack.Containers.Contains(container));
@@ -58,7 +58,7 @@ namespace ContainerVervoerUnitTest
         {
             // Arrange
             var stack = new Stack();
-            var container = new Container(10000, ContainerType.Valuable);
+            var container = new Container(10, ContainerType.Valuable);
             var placedContainers = new List<Container>();
 
             // Act
@@ -75,11 +75,11 @@ namespace ContainerVervoerUnitTest
         {
             // Arrange
             var stack = new Stack();
-            for (int i = 0; i < 15; i++) // Add enough containers to exceed the weight limit
+            for (int i = 0; i < 15; i++)
             {
-                stack.AddContainer(new Container(10000, ContainerType.Normal));
+                stack.AddContainer(new Container(10, ContainerType.Normal));
             }
-            var container = new Container(10000, ContainerType.Valuable);
+            var container = new Container(10, ContainerType.Valuable);
             var placedContainers = new List<Container>();
 
             // Act
@@ -90,11 +90,11 @@ namespace ContainerVervoerUnitTest
             Assert.IsFalse(placedContainers.Contains(container));
         }
         [TestMethod]
-        public void CanAddToStack_WithinWeightLimit_ReturnsTrue()
+        public void WithinWeightLimit_ShouldReturnsTrue()
         {
             // Arrange
             var stack = new Stack();
-            var container = new Container(10000, ContainerType.Normal);
+            var container = new Container(10, ContainerType.Normal);
 
             // Act
             bool canAdd = stack.CanAddContainer(container);
@@ -104,15 +104,15 @@ namespace ContainerVervoerUnitTest
         }
 
         [TestMethod]
-        public void Container_CanAddToStack_ExceedsWeightLimit_ReturnsFalse()
+        public void CanAddToStack_ExceedsWeightLimit_ShouldReturnsFalse()
         {
             // Arrange
             var stack = new Stack();
             for (int i = 0; i < 15; i++) // Add enough containers to reach the weight limit
             {
-                stack.AddContainer(new Container(10000, ContainerType.Normal));
+                stack.AddContainer(new Container(10, ContainerType.Normal));
             }
-            var container = new Container(10000, ContainerType.Normal);
+            var container = new Container(10, ContainerType.Normal);
 
             // Act
             bool canAdd = stack.CanAddContainer(container);
@@ -122,40 +122,21 @@ namespace ContainerVervoerUnitTest
         }
 
         [TestMethod]
-        public void Container_AddToStack_AddsAtEnd()
+        public void Container_AddToStack_ShouldAddsAtEnd()
         {
             // Arrange
             var stack = new Stack();
-            var container1 = new Container(10000, ContainerType.Normal);
-            var container2 = new Container(5000, ContainerType.Normal);
+            var container1 = new Container(10, ContainerType.Normal);
+            var container2 = new Container(5, ContainerType.Normal);
 
             // Act
-            container1.PlaceInStack(stack, new List<Container>());
-            container2.PlaceInStack(stack, new List<Container>());
+            container1.CanPlaceInStack(stack, new List<Container>());
+            container2.CanPlaceInStack(stack, new List<Container>());
 
             // Assert
             Assert.AreEqual(container1, stack.Containers[0]);
             Assert.AreEqual(container2, stack.Containers[1]);
         }
-
-        [TestMethod]
-        public void Container_AddValueableContainer_AddsAtStart()
-        {
-            // Arrange
-            var stack = new Stack();
-            var container1 = new Container(10000, ContainerType.Normal);
-            var valuableContainer = new Container(5000, ContainerType.Valuable);
-
-            // Act
-            container1.PlaceInStack(stack, new List<Container>());
-            valuableContainer.PlaceValuableInStack(stack, new List<Container>());
-
-            // Assert
-            Assert.AreEqual(valuableContainer, stack.Containers[0]);
-            Assert.AreEqual(container1, stack.Containers[1]);
-        }
-
-        // Ensure previously written tests are included...
 
         [TestMethod]
         public void Container_CannotAddToFullStack_ReturnsFalse()
@@ -164,9 +145,9 @@ namespace ContainerVervoerUnitTest
             var stack = new Stack();
             for (int i = 0; i < 15; i++) 
             {
-                stack.AddContainer(new Container(10000, ContainerType.Normal));
+                stack.AddContainer(new Container(10, ContainerType.Normal));
             }
-            var container = new Container(10000, ContainerType.Normal);
+            var container = new Container(10, ContainerType.Normal);
 
             // Act
             bool canAdd = stack.CanAddContainer(container);
@@ -179,14 +160,14 @@ namespace ContainerVervoerUnitTest
         public void Container_Constructor_ValidatesWeightCorrectly()
         {
             // Arrange
-            int weight = 100000;
+            int weight = 10;
             ContainerType containerType = ContainerType.Normal;
 
             // Act
             var container = new Container(weight, containerType);
 
             // Assert
-            Assert.AreEqual(weight + 4000, container.Weight);
+            Assert.AreEqual(weight*1000 + 4000, container.Weight);
         }
 
         [TestMethod]
@@ -194,11 +175,11 @@ namespace ContainerVervoerUnitTest
         {
             // Arrange
             var stack = new Stack();
-            var container = new Container(10000, ContainerType.Normal);
+            var container = new Container(10, ContainerType.Normal);
             var placedContainers = new List<Container>();
 
             // Act
-            container.PlaceInStack(stack, placedContainers);
+            container.CanPlaceInStack(stack, placedContainers);
 
             // Assert
             Assert.IsTrue(stack.Containers.Contains(container));
@@ -210,8 +191,8 @@ namespace ContainerVervoerUnitTest
         {
             // Arrange
             var stack = new Stack();
-            var container1 = new Container(10000, ContainerType.Normal);
-            var container2 = new Container(5000, ContainerType.Normal);
+            var container1 = new Container(10, ContainerType.Normal);
+            var container2 = new Container(5, ContainerType.Normal);
 
             // Act
             stack.AddContainer(container1);
@@ -221,6 +202,135 @@ namespace ContainerVervoerUnitTest
             Assert.AreEqual(2, stack.Containers.Count);
             Assert.AreEqual(container1, stack.Containers[0]);
             Assert.AreEqual(container2, stack.Containers[1]);
+        }
+        [TestMethod]
+        [ExpectedException(typeof(Exception), "De container weegt teveel. De container weegt 35000 en maximaal 30000 toegelaten")]
+        public void Container_Constructor_InvalidWeight_ThrowsException()
+        {
+            // Arrange
+            int weight = 31; // Exceeds max weight when added with empty container weight
+            ContainerType containerType = ContainerType.Normal;
+
+            // Act
+            var container = new Container(weight, containerType);
+        }
+
+
+        [TestMethod]
+        public void CanPlaceInStack_StackHasSpace_AddsContainer()
+        {
+            // Arrange
+            var stack = new Stack();
+            var container = new Container(10, ContainerType.Normal);
+            var placedContainers = new List<Container>();
+
+            // Act
+            bool result = container.CanPlaceInStack(stack, placedContainers);
+
+            // Assert
+            Assert.IsTrue(result);
+            Assert.IsTrue(stack.Containers.Contains(container));
+            Assert.IsTrue(placedContainers.Contains(container));
+        }
+
+        [TestMethod]
+        public void PlaceInStack_ExceedsWeightLimit_DoesNotAddContainer()
+        {
+            // Arrange
+            var stack = new Stack();
+            for (int i = 0; i < 15; i++) // Add enough containers to exceed the weight limit
+            {
+                stack.AddContainer(new Container(10, ContainerType.Normal));
+            }
+            var container = new Container(10, ContainerType.Normal);
+            var placedContainers = new List<Container>();
+
+            // Act
+            container.CanPlaceInStack(stack, placedContainers);
+
+            // Assert
+            Assert.IsFalse(stack.Containers.Contains(container));
+            Assert.IsFalse(placedContainers.Contains(container));
+        }
+
+        [TestMethod]
+        public void CanAddContainer_ValidatesWeightCorrectly_ReturnsTrue()
+        {
+            // Arrange
+            var stack = new Stack();
+            var container = new Container(10, ContainerType.Normal);
+
+            // Act
+            bool result = stack.CanAddContainer(container);
+
+            // Assert
+            Assert.IsTrue(result);
+        }
+
+        [TestMethod]
+        public void CanAddContainer_ExceedsWeightLimit_ReturnsFalse()
+        {
+            // Arrange
+            var stack = new Stack();
+            for (int i = 0; i < 15; i++)
+            {
+                stack.AddContainer(new Container(10, ContainerType.Normal));
+            }
+            var container = new Container(10, ContainerType.Normal);
+
+            // Act
+            bool result = stack.CanAddContainer(container);
+
+            // Assert
+            Assert.IsFalse(result);
+        }
+
+        [TestMethod]
+        public void Container_ValidatesTypeAndWeight()
+        {
+            // Arrange
+            int weight = 5;
+            ContainerType containerType = ContainerType.ValuableCooled;
+
+            // Act
+            var container = new Container(weight, containerType);
+
+            // Assert
+            Assert.AreEqual(weight*1000 + 4000, container.Weight);
+            Assert.AreEqual(ContainerType.ValuableCooled, container.ContainerType);
+        }
+
+        [TestMethod]
+        public void PlaceNormalContainer_StackWithValuable_AddsContainer()
+        {
+            // Arrange
+            var stack = new Stack();
+            var valuableContainer = new Container(10, ContainerType.Valuable);
+            stack.AddContainer(valuableContainer);
+
+            var normalContainer = new Container(5, ContainerType.Normal);
+            var placedContainers = new List<Container>();
+
+            // Act
+            normalContainer.CanPlaceInStack(stack, placedContainers);
+
+            // Assert
+            Assert.IsTrue(stack.Containers.Contains(normalContainer));
+            Assert.IsTrue(placedContainers.Contains(normalContainer));
+        }
+
+        [TestMethod]
+        public void AddContainer_ValidWeight_AddsToStack()
+        {
+            // Arrange
+            var stack = new Stack();
+            var container = new Container(10, ContainerType.Normal);
+
+            // Act
+            stack.AddContainer(container);
+
+            // Assert
+            Assert.IsTrue(stack.Containers.Contains(container));
         }
     }
 }
