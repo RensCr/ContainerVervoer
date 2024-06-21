@@ -198,5 +198,39 @@ namespace ContainerVervoerUnitTest
             Assert.AreEqual(container2, ship.Rows[1].Stacks[1].Containers[0]);
         }
 
+        [TestMethod]
+        public void IsValidContainerSpot_ValuableContainersInAdjacentRows_ShouldReturnsFalse()
+        {
+            // Arrange
+            var ship = new Ship(3, 3);
+            var container1 = new Container(10,ContainerType.Valuable);
+            var container2 = new Container(10, ContainerType.Valuable);
+            ship.Rows[0].Stacks[1].Containers.Add(container1);
+            ship.Rows[2].Stacks[1].Containers.Add(container2);
+
+            // Act
+            var result = ship.IsValidContainerSpot(1, 1);
+
+            // Assert
+            Assert.IsFalse(result);
+        }
+
+        [TestMethod]
+        public void IsValidContainerSpot_Place2normalContainers_ShouldReturnTrue()
+        {
+            // Arrange
+            var ship = new Ship(3, 3);
+            var container1 = new Container(10, ContainerType.Normal);
+            var container2 = new Container(10, ContainerType.Normal);
+            ship.Rows[0].Stacks[1].Containers.Add(container1);
+            ship.Rows[2].Stacks[1].Containers.Add(container2);
+
+            // Act
+            var result = ship.IsValidContainerSpot(1, 1);
+
+            // Assert
+            Assert.IsTrue(result);
+        }
+
     }
 }
