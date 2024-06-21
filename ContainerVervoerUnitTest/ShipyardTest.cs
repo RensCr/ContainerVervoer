@@ -227,8 +227,6 @@ namespace ContainerVervoerUnitTest
             // Assert
             Assert.AreEqual(3, loadedRows.Count);
             Assert.AreEqual(3, loadedRows[0].Stacks.Count);
-
-            // Verify placement logic
             Assert.IsTrue(loadedRows[0].Stacks.Any(stack => stack.ContainsContainerType(ContainerType.ValuableCooled)), "Valuable cooled container should be in row 1.");
             Assert.IsTrue(loadedRows.SelectMany(row => row.Stacks).Any(stack => stack.Containers.Any(container => container.ContainerType == ContainerType.Coolable)), "Coolable container should be placed.");
             Assert.IsTrue(loadedRows.SelectMany(row => row.Stacks).Any(stack => stack.Containers.Any(container => container.ContainerType == ContainerType.Valuable)), "Valuable container should be placed.");

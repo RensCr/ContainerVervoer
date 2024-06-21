@@ -6,7 +6,7 @@ namespace ContainerVervoer
 {
     public class Container
     {
-        public int Weight { get; set; } // Gewicht in kg
+        public int Weight { get; set; } 
         public ContainerType ContainerType { get; set; }
 
         private const int WeightEmptyContainer = 4000;
@@ -17,6 +17,10 @@ namespace ContainerVervoer
             if ((weight*1000) + WeightEmptyContainer <= MaxWeightContainer)
             {
                 this.Weight = (weight*1000) + WeightEmptyContainer;
+            }
+            else
+            {
+                this.Weight= (weight * 1000) + WeightEmptyContainer;
             }
             this.ContainerType = containerType;
         }

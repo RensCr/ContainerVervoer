@@ -7,110 +7,41 @@ Ship ship = new Ship(lenght, widht);
 
 List<Container> containers = new List<Container>
         {
-                new Container(26, ContainerType.Valuable),
-
-    //new Container(40000, ContainerType.Valuable),
-    //    new Container(40001, ContainerType.Valuable),
-    //        new Container(40002, ContainerType.Valuable),
-    //                    new Container(40003, ContainerType.Valuable),
-    //                                new Container(40004, ContainerType.Valuable),
-    //                                new Container(40000,ContainerType.Normal),
-    //                                new Container(40001,ContainerType.Normal),
-    //                                                                    new Container(40002,ContainerType.Normal),
-    //                                                                                                        new Container(40000,ContainerType.Normal),
-    //                                new Container(40001,ContainerType.Normal),
-    //                                                                    new Container(40002,ContainerType.Normal),
-    //                                                                                                        new Container(40000,ContainerType.Normal),
-    //                                new Container(40001,ContainerType.Normal),
-    //                                                                    new Container(40002,ContainerType.Normal),
-    //                                                                                                   new Container(40000,ContainerType.Normal),
-    //                                new Container(40001,ContainerType.Normal),
-    //                                                                    new Container(40002,ContainerType.Normal),
-
-
-new Container(15, ContainerType.Normal),
-new Container(16, ContainerType.Normal),
-new Container(17, ContainerType.Normal),
-new Container(18, ContainerType.Normal),
-new Container(19, ContainerType.Normal),
-new Container(10, ContainerType.ValuableCooled), // Valuable Cooled
-new Container(11, ContainerType.ValuableCooled), // Valuable Cooled
-new Container(12, ContainerType.Coolable),       // Coolable
-new Container(10, ContainerType.ValuableCooled), // Valuable Cooled
-new Container(11, ContainerType.ValuableCooled), // Valuable Cooled
-new Container(12, ContainerType.Coolable),       // Coolable
-new Container(13, ContainerType.Valuable),       // Valuable
-new Container(14, ContainerType.ValuableCooled), // Valuable Cooled
-new Container(15, ContainerType.ValuableCooled), // Valuable Cooled
-new Container(16, ContainerType.Coolable),       // Coolable
-new Container(17, ContainerType.Valuable),       // Valuable
-new Container(18, ContainerType.ValuableCooled), // Valuable Cooled
-new Container(19, ContainerType.ValuableCooled), // Valuable Cooled
-new Container(15, ContainerType.Normal),
-new Container(16, ContainerType.Normal),
-new Container(17, ContainerType.Normal),
-new Container(18, ContainerType.Normal),
-new Container(19, ContainerType.Normal),
-new Container(15, ContainerType.Normal),
-new Container(16, ContainerType.Normal),
-new Container(17, ContainerType.Normal),
-new Container(18, ContainerType.Normal),
-new Container(19, ContainerType.Normal),
-
-
-
-
-
-                    // Normal          // Normal
-//            new Container(10000, ContainerType.ValuableCooled),
-//            new Container(10001, ContainerType.ValuableCooled),
-
-
+            new Container(26, ContainerType.Valuable),
+            new Container(15, ContainerType.Normal),
+            new Container(16, ContainerType.Normal),
+            new Container(17, ContainerType.Normal),
+            new Container(18, ContainerType.Normal),
+            new Container(19, ContainerType.Normal),
+            new Container(10, ContainerType.ValuableCooled),
+            new Container(11, ContainerType.ValuableCooled),
+            new Container(12, ContainerType.Coolable),
+            new Container(10, ContainerType.ValuableCooled),
+            new Container(11, ContainerType.ValuableCooled),
+            new Container(12, ContainerType.Coolable),
+            new Container(13, ContainerType.Valuable),
+            new Container(14, ContainerType.ValuableCooled),
+            new Container(15, ContainerType.ValuableCooled),
+            new Container(16, ContainerType.Coolable),
+            new Container(17, ContainerType.Valuable),
+            new Container(18, ContainerType.ValuableCooled),
+            new Container(19, ContainerType.ValuableCooled),
+            new Container(15, ContainerType.Normal),
+            new Container(16, ContainerType.Normal),
+            new Container(17, ContainerType.Normal),
+            new Container(18, ContainerType.Normal),
+            new Container(19, ContainerType.Normal),
+            new Container(15, ContainerType.Normal),
+            new Container(16, ContainerType.Normal),
+            new Container(17, ContainerType.Normal),
+            new Container(18, ContainerType.Normal),
+            new Container(19, ContainerType.Normal),
             new Container(10, ContainerType.Coolable),
             new Container(10, ContainerType.Valuable),
             new Container(10, ContainerType.Normal),
-
-            new Container(10005, ContainerType.Normal),
-            new Container(10006, ContainerType.Normal),
-                        new Container(10000, ContainerType.ValuableCooled),
-            new Container(10001, ContainerType.ValuableCooled),
-
-
-//            new Container(10002, ContainerType.Coolable),
-//            new Container(10003, ContainerType.Valuable),
-//            new Container(10004, ContainerType.Normal),
-
-//            new Container(10005, ContainerType.Normal),
-//            new Container(10006, ContainerType.Normal),
-//            new Container(10007, ContainerType.ValuableCooled),
-//new Container(10008, ContainerType.ValuableCooled),
-//new Container(10009, ContainerType.Coolable),
-//new Container(10010, ContainerType.Valuable),
-//new Container(10011, ContainerType.Normal),
-
-//new Container(10012, ContainerType.Normal),
-//new Container(10013, ContainerType.Normal),
-//new Container(10014, ContainerType.ValuableCooled),
-//new Container(10015, ContainerType.ValuableCooled),
-//new Container(10016, ContainerType.Coolable),
-
-//new Container(10017, ContainerType.Valuable),
-//new Container(10018, ContainerType.Normal),
-//new Container(10019, ContainerType.Normal),
-//new Container(10020, ContainerType.Normal),
-//new Container(10021, ContainerType.ValuableCooled),
-
-//new Container(10022, ContainerType.ValuableCooled),
-//new Container(10023, ContainerType.Coolable),
-//new Container(10024, ContainerType.Valuable),
-//new Container(10025, ContainerType.Normal),
-//new Container(10026, ContainerType.Normal),
-
-
-
-
+            //new Container(1000, ContainerType.Normal)
         };
-
+containers.RemoveAll(container => container.Weight >= 30000);
 
 
 

@@ -8,7 +8,7 @@ namespace ContainerVervoerUnitTest
         public void Constructor_ValidWeight_ShouldReturnCorrectWeight()
         {
             // Arrange
-            int weight = 10; // Net weight without the empty container weight
+            int weight = 10; 
             ContainerType containerType = ContainerType.Normal;
 
             // Act
@@ -38,7 +38,7 @@ namespace ContainerVervoerUnitTest
         {
             // Arrange
             var stack = new Stack();
-            for (int i = 0; i < 15; i++) // Add enough containers to exceed the weight limit
+            for (int i = 0; i < 15; i++) 
             {
                 stack.AddContainer(new Container(10, ContainerType.Normal));
             }
@@ -66,7 +66,7 @@ namespace ContainerVervoerUnitTest
 
             // Assert
             CollectionAssert.Contains(stack.Containers, container);
-            Assert.AreEqual(container, stack.Containers[0]); // It should be the first container in the stack
+            Assert.AreEqual(container, stack.Containers[0]);
             CollectionAssert.Contains(placedContainers, container);
         }
 
@@ -108,7 +108,7 @@ namespace ContainerVervoerUnitTest
         {
             // Arrange
             var stack = new Stack();
-            for (int i = 0; i < 15; i++) // Add enough containers to reach the weight limit
+            for (int i = 0; i < 15; i++) 
             {
                 stack.AddContainer(new Container(10, ContainerType.Normal));
             }
