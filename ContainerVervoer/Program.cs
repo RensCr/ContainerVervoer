@@ -13,19 +13,19 @@ List<Container> containers = new List<Container>
             new Container(17, ContainerType.Normal),
             new Container(18, ContainerType.Normal),
             new Container(19, ContainerType.Normal),
-            new Container(10, ContainerType.ValuableCooled), 
-            new Container(11, ContainerType.ValuableCooled), 
-            new Container(12, ContainerType.Coolable),       
-            new Container(10, ContainerType.ValuableCooled), 
-            new Container(11, ContainerType.ValuableCooled), 
-            new Container(12, ContainerType.Coolable),       
-            new Container(13, ContainerType.Valuable),       
-            new Container(14, ContainerType.ValuableCooled), 
+            new Container(10, ContainerType.ValuableCooled),
+            new Container(11, ContainerType.ValuableCooled),
+            new Container(12, ContainerType.Coolable),
+            new Container(10, ContainerType.ValuableCooled),
+            new Container(11, ContainerType.ValuableCooled),
+            new Container(12, ContainerType.Coolable),
+            new Container(13, ContainerType.Valuable),
+            new Container(14, ContainerType.ValuableCooled),
             new Container(15, ContainerType.ValuableCooled),
-            new Container(16, ContainerType.Coolable),       
-            new Container(17, ContainerType.Valuable),       
+            new Container(16, ContainerType.Coolable),
+            new Container(17, ContainerType.Valuable),
             new Container(18, ContainerType.ValuableCooled),
-            new Container(19, ContainerType.ValuableCooled), 
+            new Container(19, ContainerType.ValuableCooled),
             new Container(15, ContainerType.Normal),
             new Container(16, ContainerType.Normal),
             new Container(17, ContainerType.Normal),
@@ -38,9 +38,10 @@ List<Container> containers = new List<Container>
             new Container(19, ContainerType.Normal),
             new Container(10, ContainerType.Coolable),
             new Container(10, ContainerType.Valuable),
-            new Container(10, ContainerType.Normal)
+            new Container(10, ContainerType.Normal),
+            //new Container(1000, ContainerType.Normal)
         };
-
+containers.RemoveAll(container => container.Weight >= 30000);
 
 
 

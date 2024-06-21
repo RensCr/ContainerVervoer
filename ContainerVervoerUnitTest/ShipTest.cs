@@ -17,7 +17,7 @@ namespace ContainerVervoerUnitTest
             // Assert
             Assert.AreEqual(length, ship.Length);
             Assert.AreEqual(width, ship.Width);
-            Assert.AreEqual(7500000, ship.MaxWeight); // (10 * 5) * 150000
+            Assert.AreEqual(7500000, ship.MaxWeight);
             Assert.AreEqual(length, ship.Rows.Count);
             Assert.IsTrue(ship.Rows.All(row => row.Stacks.Count == width));
         }
@@ -50,7 +50,7 @@ namespace ContainerVervoerUnitTest
             int maxWeight = ship.CalculateMaxWeight();
 
             // Assert
-            Assert.AreEqual(2700000, maxWeight); // (6 * 3) * 150000
+            Assert.AreEqual(2700000, maxWeight); 
         }
 
         [TestMethod]
