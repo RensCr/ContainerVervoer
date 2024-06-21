@@ -58,7 +58,7 @@ namespace ContainerVervoer
             return totalWeight;
         }
 
-        public bool CanPlaceContainerInStack(int currentRowIndex, int stackIndex)
+        public bool IsValidContainerSpot(int currentRowIndex, int stackIndex)
         {
             Row row = Rows[currentRowIndex];
             Stack stack = row.Stacks[stackIndex];
@@ -70,7 +70,7 @@ namespace ContainerVervoer
             {
                 Row previousRow = Rows[currentRowIndex - 1];
                 Stack previousStack = previousRow.Stacks[stackIndex];
-                previousStackHasValuable = previousStack.HasValuableContainer();
+                previousStackHasValuable = previousStack.ContainsContainerType(ContainerType.Valuable);
                 previousRowStackHeight = previousRow.Stacks[stackIndex].Height;
             }
 
@@ -78,7 +78,7 @@ namespace ContainerVervoer
             {
                 Row nextRow = Rows[currentRowIndex + 1];
                 Stack nextStack = nextRow.Stacks[stackIndex];
-                nextStackHasValuable = nextStack.HasValuableContainer();
+                nextStackHasValuable = nextStack.ContainsContainerType(ContainerType.Valuable);
                 nextRowStackHeight = nextRow.Stacks[stackIndex].Height;
             }
 

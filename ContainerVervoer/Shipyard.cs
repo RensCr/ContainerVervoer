@@ -18,9 +18,9 @@ namespace ContainerVervoer
 
             int[] order = CalculateBestOrder(ship.Width);
             PlaceValuableCooledContainersOnRow1(valuableCooledContainers, order, ship, placedContainers);
-            PlaceCoolableContainersOnRow1(rows, coolableContainers, placedContainers);
-            PlaceValuableContainers(rows, valuableContainers, placedContainers);
-            PlaceNormalContainers(rows, normalContainers, placedContainers, ship);
+            PlaceCoolableContainersOnRow1(coolableContainers, placedContainers,ship);
+            PlaceValuableContainers(valuableContainers, placedContainers, ship);
+            PlaceNormalContainers(normalContainers, placedContainers, ship);
             int totalShipWeight = ship.CalulateTotalWeight(rows);
             if (totalShipWeight > ship.MaxWeight / 2)
             {
@@ -56,7 +56,7 @@ namespace ContainerVervoer
                 if (valuableCooledCount < ship.Width)
                 {
                     var stack = rows[0].Stacks[order[valuableCooledCount]];
-                    if (stack.CanAddContainer(container) && !stack.ContainsValuableCooledContainer())
+                    if (stack.CanAddContainer(container) && !stack.ContainsContainerType(ContainerType.ValuableCooled))
                     {
                         container.CanPlaceInStack(stack, placedContainers);
                         placed = true;
@@ -69,12 +69,13 @@ namespace ContainerVervoer
             }
         }
 
-        private void PlaceCoolableContainersOnRow1(List<Row> rows, List<Container> coolableContainers, List<Container> placedContainers)
+        private void PlaceCoolableContainersOnRow1(List<Container> coolableContainers, List<Container> placedContainers,Ship ship)
         {
+            List<Row> rows = ship.Rows;
             foreach (var container in coolableContainers)
             {
                 bool placed = false;
-                var minWeightStack = rows[0].Stacks.OrderBy(s => s.GetCurrentStackWeight()).First();
+                var minWeightStack = rows[0].Stacks.OrderBy(s => s.GetTotalWeight()).First();
                 if (minWeightStack.CanAddContainer(container))
                 {
                     container.CanPlaceInStack(minWeightStack, placedContainers);
@@ -88,17 +89,18 @@ namespace ContainerVervoer
             }
         }
 
-        private void PlaceValuableContainers(List<Row> rows, List<Container> valuableContainers, List<Container> placedContainers)
+        private void PlaceValuableContainers(List<Container> valuableContainers, List<Container> placedContainers,Ship ship)
         {
+            List<Row> rows = ship.Rows;
             foreach (var container in valuableContainers)
             {
                 bool placed = false;
 
                 var filteredRows = rows.Where((row, index) => (index + 1) % 3 != 0);
 
-                foreach (var stack in filteredRows.SelectMany(r => r.Stacks).OrderBy(s => s.GetCurrentStackWeight()))
+                foreach (var stack in filteredRows.SelectMany(r => r.Stacks).OrderBy(s => s.GetTotalWeight()))
                 {
-                    if (!stack.ContainsValuableCooledContainer() && !stack.ContainsValuableContainer() && stack.CanAddContainer(container))
+                    if (!stack.ContainsContainerType(ContainerType.ValuableCooled) && !stack.ContainsContainerType(ContainerType.Valuable) && stack.CanAddContainer(container))
                     {
                         container.PlaceValuableInStack(stack, placedContainers);
                         placed = true;
@@ -114,29 +116,30 @@ namespace ContainerVervoer
         }
 
 
-        private void PlaceNormalContainers(List<Row> rows, List<Container> normalContainers, List<Container> placedContainers,Ship ship)
+        private void PlaceNormalContainers(List<Container> normalContainers, List<Container> placedContainers,Ship ship)
         {
             foreach (var container in normalContainers)
             {
-                if (!TryPlaceContainer(container, rows, placedContainers,ship))
+                if (!TryPlaceNormalContainer(container,placedContainers,ship))
                 {
                     Console.WriteLine($"Container : {container.ContainerType} met gewicht {container.Weight}. Kon niet geplaatst worden");
                 }
             }
         }
 
-        private bool TryPlaceContainer(Container container, List<Row> rows, List<Container> placedContainers,Ship ship)
+        private bool TryPlaceNormalContainer(Container container,List<Container> placedContainers,Ship ship)
         {
-            var orderedRows = rows.OrderBy(row => row.GetCurrentTotalWeight()).ToList();
+            List<Row> rows = ship.Rows;
+            var orderedRows = rows.OrderBy(row => row.GetTotalWeight()).ToList();
 
             foreach (var row in orderedRows)
             {
-                foreach (var stack in row.Stacks.OrderBy(s => s.GetCurrentStackWeight()))
+                foreach (var stack in row.Stacks.OrderBy(s => s.GetTotalWeight()))
                 {
                     int currentRowIndex = rows.IndexOf(row);
                     int stackIndex = row.Stacks.IndexOf(stack);
 
-                    if (stack.CanAddContainer(container) && ship.CanPlaceContainerInStack(currentRowIndex, stackIndex))
+                    if (stack.CanAddContainer(container) && ship.IsValidContainerSpot(currentRowIndex, stackIndex))
                     {
                         container.CanPlaceInStack(stack, placedContainers);
                         return true;

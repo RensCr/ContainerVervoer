@@ -14,9 +14,9 @@ namespace ContainerVervoer
         {
             Stacks = new List<Stack>();
         }
-        public int GetCurrentTotalWeight()
+        public int GetTotalWeight()
         {
-            return Stacks.Sum(stack => stack.GetCurrentStackWeight());
+            return Stacks.Sum(stack => stack.GetTotalWeight());
         }
     }
 }

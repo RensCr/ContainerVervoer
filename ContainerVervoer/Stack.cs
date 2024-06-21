@@ -16,18 +16,18 @@ namespace ContainerVervoer
             Containers = new List<Container>();
         }
 
-        public int GetCurrentStackWeight()
+        public int GetTotalWeight()
         {
             return Containers.Sum(c => c.Weight);
         }
 
         public bool CanAddContainer(Container container)
         {
-            return GetCurrentStackWeight() + container.Weight <= MaxWeightPerStack && CanContainerHoldRestOfStack(container);
+            return GetTotalWeight() + container.Weight <= MaxWeightPerStack && !IsWeightOnTopTooHeavy(container);
         }
-        private bool CanContainerHoldRestOfStack(Container container)
+        private bool IsWeightOnTopTooHeavy(Container container)
         {
-            return GetCurrentStackWeight() + container.Weight <= MaxWeightOnlowestContainer;
+            return !(GetTotalWeight() + container.Weight <= MaxWeightOnlowestContainer);
         }
 
         public bool AddContainer(Container container)
@@ -47,32 +47,14 @@ namespace ContainerVervoer
                 Containers.Insert(0, container);
             }
         }
-
-        public bool ContainsValuableCooledContainer()
+        public bool ContainsContainerType(ContainerType containerType)
         {
-            return Containers.Any(c => c.ContainerType == ContainerType.ValuableCooled);
-        }
-
-        public bool ContainsValuableContainer()
-        {
-            return Containers.Any(c => c.ContainerType == ContainerType.Valuable);
+            return Containers.Any(c => c.ContainerType == containerType);
         }
 
         public bool ContainsContainer(Container container)
         {
             return Containers.Contains(container);
-        }
-        public bool HasValuableContainer()
-        {
-            foreach (var container in Containers)
-            {
-                if (container.ContainerType == ContainerType.Valuable)
-                {
-                    return true;
-                }
-            }
-            return false;
-
         }
     }
 }

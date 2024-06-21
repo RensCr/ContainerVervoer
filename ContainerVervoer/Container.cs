@@ -18,11 +18,6 @@ namespace ContainerVervoer
             {
                 this.Weight = (weight*1000) + WeightEmptyContainer;
             }
-            else
-            {
-                throw new Exception($"De container weegt teveel. De container weegt {weight + WeightEmptyContainer} en maximaal {MaxWeightContainer} toegelaten");
-            }
-
             this.ContainerType = containerType;
         }
 

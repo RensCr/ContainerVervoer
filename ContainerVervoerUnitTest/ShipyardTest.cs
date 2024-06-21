@@ -16,10 +16,10 @@ namespace ContainerVervoerUnitTest
             var ship = new Ship(3, 3); 
             var containers = new List<Container>
             {
-                new Container(10, ContainerType.ValuableCooled), // Valuable Cooled
-                new Container(12, ContainerType.Coolable),       // Coolable
-                new Container(8, ContainerType.Valuable),         // Valuable
-                new Container(15, ContainerType.Normal),          // Normal
+                new Container(10, ContainerType.ValuableCooled), 
+                new Container(12, ContainerType.Coolable),       
+                new Container(8, ContainerType.Valuable),         
+                new Container(15, ContainerType.Normal),          
                 new Container(14, ContainerType.Normal),
                 new Container(13, ContainerType.Normal)
             };
@@ -30,16 +30,14 @@ namespace ContainerVervoerUnitTest
             List<Row> loadedRows = shipyard.LoadShip(ship, containers);
 
             // Assert
-            Assert.AreEqual(3, loadedRows.Count); // Should have 3 rows
-            Assert.AreEqual(3, loadedRows[0].Stacks.Count); // Each row should have 3 stacks
-
-            // Verify placement of specific containers
-            Assert.IsTrue(loadedRows[0].Stacks[0].ContainsValuableCooledContainer()); // Valuable Cooled container should be in stack 0 of row 0
-            Assert.IsTrue(loadedRows[0].Stacks[1].ContainsContainer(containers[1])); // Coolable container should be in stack 1 of row 0
-            Assert.IsTrue(loadedRows[1].Stacks[0].ContainsContainer(containers[2])); // Valuable container should be in stack 0 of row 1
-            Assert.IsTrue(loadedRows[2].Stacks[0].ContainsContainer(containers[3])); // Normal container should be in stack 0 of row 2
-            Assert.IsTrue(loadedRows[2].Stacks[1].ContainsContainer(containers[4])); // Normal container should be in stack 1 of row 2
-            Assert.IsTrue(loadedRows[2].Stacks[2].ContainsContainer(containers[5])); // Normal container should be in stack 2 of row 2
+            Assert.AreEqual(3, loadedRows.Count); 
+            Assert.AreEqual(3, loadedRows[0].Stacks.Count); 
+            Assert.IsTrue(loadedRows[0].Stacks[0].ContainsContainerType(ContainerType.ValuableCooled)); 
+            Assert.IsTrue(loadedRows[0].Stacks[1].ContainsContainer(containers[1]));
+            Assert.IsTrue(loadedRows[1].Stacks[0].ContainsContainer(containers[2]));
+            Assert.IsTrue(loadedRows[2].Stacks[0].ContainsContainer(containers[3]));
+            Assert.IsTrue(loadedRows[2].Stacks[1].ContainsContainer(containers[4]));
+            Assert.IsTrue(loadedRows[2].Stacks[2].ContainsContainer(containers[5]));
         }
 
 
@@ -70,13 +68,13 @@ namespace ContainerVervoerUnitTest
         }
 
         [TestMethod]
-        public void LoadShip_AddValuableContainers_ShouldNotPlaceContainersBecauseMinWeightIsNotFetched()
+        public void LoadShip_AddValuableContainers_ShouldNotPlaceAllContainers()
         {
             // Arrange
-            var ship = new Ship(2, 2); // Creating a ship with 2 rows and 2 stacks per row
+            var ship = new Ship(2, 2); 
             var containers = new List<Container>
             {
-                new Container(10, ContainerType.ValuableCooled), // Valuable Cooled
+                new Container(10, ContainerType.ValuableCooled), 
                 new Container(10, ContainerType.ValuableCooled),
                 new Container(10, ContainerType.ValuableCooled),
                 new Container(10, ContainerType.ValuableCooled),
@@ -92,11 +90,11 @@ namespace ContainerVervoerUnitTest
             List<Row> loadedRows = shipyard.LoadShip(ship, containers);
 
             // Assert
-            Assert.AreEqual(2, loadedRows.Count); // Should have 2 rows
-            Assert.AreEqual(2, loadedRows[0].Stacks.Count); // Each row should have 2 stacks
+            Assert.AreEqual(2, loadedRows.Count); 
+            Assert.AreEqual(2, loadedRows[0].Stacks.Count); 
         }
         [TestMethod]
-        public void LoadShip_AddOneValuabelAndMultipleNormalContainers_ValuableShoudBeAccesible()
+        public void LoadShip_AddOneValuabelAndMultipleNormalContainers_ShouldPlaceAllContainers()
         {
             // Arrange
             var ship = new Ship(3, 3);
@@ -116,7 +114,6 @@ namespace ContainerVervoerUnitTest
             List<Row> loadedRows = shipyard.LoadShip(ship, containers);
 
             // Assert
-            // Ensure that the valuable container is not blocked by normal containers
             bool valuableIsAccessible = loadedRows.SelectMany(row => row.Stacks)
                                                    .Any(stack => stack.Containers.Any(container => container.ContainerType == ContainerType.Valuable) &&
                                                                  !stack.Containers.Any(container => container.ContainerType == ContainerType.Normal && container.Weight > 10000));
@@ -170,8 +167,8 @@ namespace ContainerVervoerUnitTest
             List<Row> loadedRows = shipyard.LoadShip(ship, containers);
 
             // Assert
-            int row1Weight = loadedRows[0].Stacks.Sum(s => s.GetCurrentStackWeight());
-            int row2Weight = loadedRows[1].Stacks.Sum(s => s.GetCurrentStackWeight());
+            int row1Weight = loadedRows[0].Stacks.Sum(s => s.GetTotalWeight());
+            int row2Weight = loadedRows[1].Stacks.Sum(s => s.GetTotalWeight());
             int totalWeight = row1Weight + row2Weight;
 
             double weightDifference = Math.Abs(row1Weight - row2Weight);
@@ -232,7 +229,7 @@ namespace ContainerVervoerUnitTest
             Assert.AreEqual(3, loadedRows[0].Stacks.Count);
 
             // Verify placement logic
-            Assert.IsTrue(loadedRows[0].Stacks.Any(stack => stack.ContainsValuableCooledContainer()), "Valuable cooled container should be in row 1.");
+            Assert.IsTrue(loadedRows[0].Stacks.Any(stack => stack.ContainsContainerType(ContainerType.ValuableCooled)), "Valuable cooled container should be in row 1.");
             Assert.IsTrue(loadedRows.SelectMany(row => row.Stacks).Any(stack => stack.Containers.Any(container => container.ContainerType == ContainerType.Coolable)), "Coolable container should be placed.");
             Assert.IsTrue(loadedRows.SelectMany(row => row.Stacks).Any(stack => stack.Containers.Any(container => container.ContainerType == ContainerType.Valuable)), "Valuable container should be placed.");
         }

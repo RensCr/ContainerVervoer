@@ -55,7 +55,7 @@ new Container(15, ContainerType.Normal),
 new Container(16, ContainerType.Normal),
 new Container(17, ContainerType.Normal),
 new Container(18, ContainerType.Normal),
-new Container(19, ContainerType.Normal)
+new Container(19, ContainerType.Normal),
 
 
 
@@ -66,14 +66,14 @@ new Container(19, ContainerType.Normal)
 //            new Container(10001, ContainerType.ValuableCooled),
 
 
-//            new Container(10002, ContainerType.Coolable),
-//            new Container(10003, ContainerType.Valuable),
-//            new Container(10004, ContainerType.Normal),
+            new Container(10, ContainerType.Coolable),
+            new Container(10, ContainerType.Valuable),
+            new Container(10, ContainerType.Normal),
 
-//            new Container(10005, ContainerType.Normal),
-//            new Container(10006, ContainerType.Normal),
-//                        new Container(10000, ContainerType.ValuableCooled),
-//            new Container(10001, ContainerType.ValuableCooled),
+            new Container(10005, ContainerType.Normal),
+            new Container(10006, ContainerType.Normal),
+                        new Container(10000, ContainerType.ValuableCooled),
+            new Container(10001, ContainerType.ValuableCooled),
 
 
 //            new Container(10002, ContainerType.Coolable),

@@ -5,7 +5,7 @@ namespace ContainerVervoerUnitTest
     public class StackTest
     {
         [TestMethod]
-        public void AddContainer_ContainerCanBeAdded_ReturnsTrue()
+        public void AddContainer_ContainerCanBeAdded_ShouldReturnsTrue()
         {
             // Arrange
             var stack = new Stack();
@@ -19,12 +19,12 @@ namespace ContainerVervoerUnitTest
         }
 
         [TestMethod]
-        public void AddContainer_ContainerCannotBeAdded_ReturnsFalse()
+        public void AddContainer_AddMultipleContainers_ShouldReturnTrue()
         {
             // Arrange
             var stack = new Stack();
-            var container1 = new Container(2, ContainerType.Normal); // Adding this will fill the stack
-            var container2 = new Container(3, ContainerType.Normal);  // This one exceeds the max weight
+            var container1 = new Container(2, ContainerType.Normal);
+            var container2 = new Container(3, ContainerType.Normal); 
 
             // Act
             stack.AddContainer(container1);
@@ -35,7 +35,7 @@ namespace ContainerVervoerUnitTest
         }
 
         [TestMethod]
-        public void AddContainer_AddsContainerToStack()
+        public void AddContainer_AddsContainerToStack_ShouldReturnCorrectStackInfo()
         {
             // Arrange
             var stack = new Stack();
@@ -50,7 +50,7 @@ namespace ContainerVervoerUnitTest
         }
 
         [TestMethod]
-        public void AddValueableContainer_AddsValuableContainerToTop_ShouldSucceeds()
+        public void AddValueableContainer_AddsValuableContainerToTop_ShouldGiveCorrectStackInfo()
         {
             // Arrange
             var stack = new Stack();
@@ -63,71 +63,71 @@ namespace ContainerVervoerUnitTest
 
             // Assert
             Assert.AreEqual(2, stack.Containers.Count);
-            Assert.AreEqual(valuableContainer2, stack.Containers[0]); // Check if valuableContainer2 is at the top
+            Assert.AreEqual(valuableContainer2, stack.Containers[0]);
         }
 
         [TestMethod]
-        public void ContainsValuableCooledContainer_StackContainsValuableCooledContainer_ShouldReturnsTrue()
+        public void ContainsContainerType_StackContainsValuableCooledContainer_ShouldReturnsTrue()
         {
             // Arrange
             var stack = new Stack();
             var valuableCooledContainer = new Container(5, ContainerType.ValuableCooled);
-            stack.AddContainer(new Container(10, ContainerType.Normal)); // Add a normal container
+            stack.AddContainer(new Container(10, ContainerType.Normal));
             stack.AddContainer(valuableCooledContainer);
 
             // Act
-            bool containsValuableCooled = stack.ContainsValuableCooledContainer();
+            bool containsValuableCooled = stack.ContainsContainerType(ContainerType.ValuableCooled);
 
             // Assert
             Assert.IsTrue(containsValuableCooled);
         }
 
         [TestMethod]
-        public void ContainsValuableCooledContainer_StackDoesNotContainValuableCooledContainer_ReturnsFalse()
+        public void ContainsContainerType_StackDoesNotContainValuableCooledContainer_ShouldReturnsFalse()
         {
             // Arrange
             var stack = new Stack();
-            stack.AddContainer(new Container(10, ContainerType.Normal)); // Add a normal container
+            stack.AddContainer(new Container(10, ContainerType.Normal));
 
             // Act
-            bool containsValuableCooled = stack.ContainsValuableCooledContainer();
+            bool containsValuableCooled = stack.ContainsContainerType(ContainerType.ValuableCooled);
 
             // Assert
             Assert.IsFalse(containsValuableCooled);
         }
 
         [TestMethod]
-        public void ContainsValuableContainer_StackContainsValuableContainer_ReturnsTrue()
+        public void ContainsContainerType_StackContainsValuableContainer_ShouldReturnsTrue()
         {
             // Arrange
             var stack = new Stack();
             var valuableContainer = new Container(5, ContainerType.Valuable);
-            stack.AddContainer(new Container(10, ContainerType.Normal)); // Add a normal container
+            stack.AddContainer(new Container(10, ContainerType.Normal)); 
             stack.AddContainer(valuableContainer);
 
             // Act
-            bool containsValuable = stack.ContainsValuableContainer();
+            bool containsValuable = stack.ContainsContainerType(ContainerType.Valuable);
 
             // Assert
             Assert.IsTrue(containsValuable);
         }
 
         [TestMethod]
-        public void ContainsValuableContainer_StackDoesNotContainValuableContainer_ReturnsFalse()
+        public void ContainsContainerType_StackDoesNotContainValuableContainer_ShouldReturnsFalse()
         {
             // Arrange
             var stack = new Stack();
-            stack.AddContainer(new Container(10, ContainerType.Normal)); // Add a normal container
+            stack.AddContainer(new Container(10, ContainerType.Normal));
 
             // Act
-            bool containsValuable = stack.ContainsValuableContainer();
+            bool containsValuable = stack.ContainsContainerType(ContainerType.Valuable);
 
             // Assert
             Assert.IsFalse(containsValuable);
         }
 
         [TestMethod]
-        public void GetCurrentWeight_ReturnsCorrectWeight()
+        public void GetTotalWeight_AddMultipleContainers_ShouldReturnsCorrectWeight()
         {
             // Arrange
             var stack = new Stack();
@@ -135,14 +135,14 @@ namespace ContainerVervoerUnitTest
             stack.AddContainer(new Container(7, ContainerType.Normal));
 
             // Act
-            int currentWeight = stack.GetCurrentStackWeight();
+            int currentWeight = stack.GetTotalWeight();
 
             // Assert
             Assert.AreEqual(20000, currentWeight);
         }
 
         [TestMethod]
-        public void GetStackLength_ReturnsCorrectNumberOfContainers()
+        public void StackHeight_AddMultipleContainers_ReturnsCorrectNumberOfContainers()
         {
             // Arrange
             var stack = new Stack();
